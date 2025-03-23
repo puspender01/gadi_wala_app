@@ -82,11 +82,78 @@ class _AddVehicleScreenState extends State<AddVehicleScreen> {
             children: [
               TextField(controller: nameController, decoration: InputDecoration(labelText: 'Vehicle Name')),
               TextField(controller: regNumberController, decoration: InputDecoration(labelText: 'Registration Number')),
-              TextField(controller: insuranceDetailsController, decoration: InputDecoration(labelText: 'Insurance Details')),
-              TextField(controller: insuranceExpiryController, decoration: InputDecoration(labelText: 'Insurance Expiry Date')),
-              TextField(controller: puccExpiryController, decoration: InputDecoration(labelText: 'PUCC Expiry Date')),
-              TextField(controller: registrationDateController, decoration: InputDecoration(labelText: 'Registration Date')),
-              TextField(controller: serviceDateController, decoration: InputDecoration(labelText: 'Service Date')),
+              TextField(
+                controller: insuranceExpiryController,
+                readOnly: true,
+                decoration: InputDecoration(labelText: 'Insurance Expiry Date'),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(), // Only allow future dates
+                    lastDate: DateTime(2100),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      insuranceExpiryController.text = pickedDate.toIso8601String().split('T').first;
+                    });
+                  }
+                },
+              ),
+              TextField(
+                controller: puccExpiryController,
+                readOnly: true,
+                decoration: InputDecoration(labelText: 'PUCC Expiry Date'),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(), // Only allow future dates
+                    lastDate: DateTime(2100),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      puccExpiryController.text = pickedDate.toIso8601String().split('T').first;
+                    });
+                  }
+                },
+              ),
+              TextField(
+                controller: registrationDateController,
+                readOnly: true,
+                decoration: InputDecoration(labelText: 'Registration Date'),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900), // Allow past dates
+                    lastDate: DateTime.now(), // Up to today
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      registrationDateController.text = pickedDate.toIso8601String().split('T').first;
+                    });
+                  }
+                },
+              ),
+              TextField(
+                controller: serviceDateController,
+                readOnly: true,
+                decoration: InputDecoration(labelText: 'Service Date'),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900), // Allow past dates
+                    lastDate: DateTime.now(), // Up to today
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      serviceDateController.text = pickedDate.toIso8601String().split('T').first;
+                    });
+                  }
+                },
+              ),
               SizedBox(height: 10),
               _image != null ? Image.file(_image!, height: 100) : Container(),
               ElevatedButton(onPressed: _pickImage, child: Text('Upload Photo')),
